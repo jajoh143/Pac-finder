@@ -173,6 +173,16 @@ io.on('connection', (socket) => {
     io.to(partyCode).emit('party-started');
   });
 
+  // webrtc-signal: relay WebRTC signaling between two peers in the same party
+  socket.on('webrtc-signal', ({ to, signal }) => {
+    const myParty = socketToParty.get(socket.id);
+    const theirParty = socketToParty.get(to);
+    // Only relay if both sockets are in the same active party
+    if (myParty && myParty === theirParty) {
+      io.to(to).emit('webrtc-signal', { from: socket.id, signal });
+    }
+  });
+
   socket.on('leave-party', () => {
     handleLeave(socket.id);
   });

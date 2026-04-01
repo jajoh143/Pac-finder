@@ -39,11 +39,19 @@ export interface PartyState {
 
 // ─── Socket.io Event Payloads ──────────────────────────────────────────────────
 
+// ─── WebRTC Signaling ──────────────────────────────────────────────────────────
+
+export interface WebRTCSignal {
+  type: 'offer' | 'answer' | 'ice-candidate';
+  payload: RTCSessionDescriptionInit | RTCIceCandidateInit;
+}
+
 export interface ClientToServerEvents {
   'join-party': (payload: { code: string; name: string }) => void;
   'location-update': (payload: Omit<Coordinates, 'timestamp'>) => void;
   'leave-party': () => void;
   'start-party': () => void;
+  'webrtc-signal': (payload: { to: string; signal: WebRTCSignal }) => void;
 }
 
 export interface ServerToClientEvents {
@@ -54,6 +62,7 @@ export interface ServerToClientEvents {
   'party-started': () => void;
   'party-ended': (reason: string) => void;
   'error': (payload: { message: string }) => void;
+  'webrtc-signal': (payload: { from: string; signal: WebRTCSignal }) => void;
 }
 
 // ─── Radar / UI Types ──────────────────────────────────────────────────────────

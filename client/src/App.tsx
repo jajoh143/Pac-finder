@@ -92,10 +92,23 @@ export default function App() {
   }, [emit]);
 
   const handleEmitLocation = useCallback(
-    (coords: Omit<typeof locations extends Map<string, infer V> ? V : never, 'timestamp'>) => {
+    (coords: Omit<Coordinates, 'timestamp'>) => {
       emit('location-update', coords);
     },
     [emit]
+  );
+
+  // Callback for RadarScreen to update live locations from WebRTC DataChannels
+  const handleWebRTCLocation = useCallback(
+    (fromId: string, coords: Coordinates) => {
+      setLocations((prev) => {
+        const existing = prev.get(fromId);
+        // Only update if this reading is newer (handles out-of-order delivery)
+        if (existing && existing.timestamp >= coords.timestamp) return prev;
+        return new Map(prev).set(fromId, coords);
+      });
+    },
+    []
   );
 
   if (screen === 'lobby' && party && myMember) {
@@ -115,8 +128,10 @@ export default function App() {
         party={party}
         myMember={myMember}
         locations={locations}
+        socket={socket}
         onLeave={handleLeave}
         emitLocation={handleEmitLocation}
+        onWebRTCLocation={handleWebRTCLocation}
       />
     );
   }

@@ -26,11 +26,18 @@ export interface PartyState {
   members: Member[];
 }
 
+export interface WebRTCSignal {
+  type: 'offer' | 'answer' | 'ice-candidate';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload: Record<string, any>;
+}
+
 export interface ClientToServerEvents {
   'join-party': (payload: { code: string; name: string }) => void;
   'location-update': (payload: Omit<Coordinates, 'timestamp'>) => void;
   'leave-party': () => void;
   'start-party': () => void;
+  'webrtc-signal': (payload: { to: string; signal: WebRTCSignal }) => void;
 }
 
 export interface ServerToClientEvents {
@@ -41,4 +48,5 @@ export interface ServerToClientEvents {
   'party-started': () => void;
   'party-ended': (reason: string) => void;
   'error': (payload: { message: string }) => void;
+  'webrtc-signal': (payload: { from: string; signal: WebRTCSignal }) => void;
 }
