@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pac-yellow: #FFE000;
+  --color-ghost-blinky: #FF0000;
+  --color-ghost-pinky: #FFB8FF;
+  --color-ghost-inky: #00FFFF;
+  --color-ghost-clyde: #FFB852;
+  --color-radar-bg: #001a00;
+  --color-radar-grid: #003300;
+  --font-family-display: 'Press Start 2P', system-ui;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: 'Press Start 2P', system-ui;
+  overflow: hidden;
+}

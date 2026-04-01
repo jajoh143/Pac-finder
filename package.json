@@ -1,0 +1,17 @@
+{
+  "name": "pac-finder",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w pac-finder-server\" \"npm run dev -w pac-finder-client\"",
+    "build": "npm run build -w pac-finder-client",
+    "start": "npm run start -w pac-finder-server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
